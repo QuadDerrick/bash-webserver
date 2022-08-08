@@ -38,12 +38,18 @@ firstseen=$(sed "/$ip/,/----/!d;/----/q" $logfile | tail -n 2 | head -n 1 | cut 
 # sed searches a file for first string (ip), second string (4 hypens(----)) to get the first match
 # in log file. tail -n 2 gets the two last lines of that result. head -n 1 gets the second last line.
 # cut -f2- -d: cuts out the last two section of a line delimited by colons.
+if test -z "$firstseen"
+then
+echo "" >> $tempfile
+else
 echo "First observation : " $firstseen >> $tempfile
+fi
 
 date=$(date +"%m-%d-%y %R:%S") # rewrite time stamp for concise readabilty, ofcourse.
 echo "Current timestamp : " $date >> $tempfile
 echo "------------" >> $tempfile
 echo "" >> $tempfile
-cat $tempfile # display last incomming result in console
+
+cat $tempfile # display last incomming edited data in console
 cat $tempfile >> $logfile # write to logfile
 done # reloop
