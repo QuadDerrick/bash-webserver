@@ -1,4 +1,4 @@
-!/bin/bash
+/bin/bash
 
 # usefull vars
 port=4616
@@ -38,13 +38,17 @@ echo "Previous connection attempts made : $numberoftimes" >> $tempfile
 
 # top999 thing
 grep -a -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" $logfile > tst # extract all ips from logfile
-sed -i '/0.0.0.0/d' tst # remove entrys of 0.0.0.0
+sed -i '/0.0.0.0/d' tst # remove ncs default entrys of 0.0.0.0
 cat tst | sort | uniq -c | sort -nr | head -n 999 > topp # sort out some troubles
 grep -n "$ip" topp | cut -f1 -d":" > bottom # get line number in file with grep -n , cut away everything but the number
 placement=$(head -c 3 bottom) #make it into a variable
+
+sort -u tst > tst2
+grep -c ^ tst2 > totnr
+totalnr=$(cat totnr)
 if test -z "$placement" # UNDOCUMENTED feauture of test command according to ubuntu 2022 man pages.. Tests if variable exists.
-then echo "Place on the top999 offender list : 0" >> $tempfile
-else echo "Place on the top999 offender list : $placement" >> $tempfile
+then echo "Place on the top999 offender list : $totalnr of $totalnr" >> $tempfile
+else echo "Place on the top999 offender list : $placement of $totalnr" >> $tempfile
 fi
 
 # first seen thing
