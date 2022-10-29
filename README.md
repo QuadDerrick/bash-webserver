@@ -9,4 +9,5 @@ To have a unpriviledged user recieve web traffic at port 80(http) rerouting it l
 iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-ports 4616
 
 "Special" requirements : nc(netcat) Debian version from march 31 2021.
+
 Any debian based nc version work i think, with a bit of luck even busybox nc.
